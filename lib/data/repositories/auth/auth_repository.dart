@@ -20,7 +20,7 @@ class AuthRepository {
       switch (result) {
         case Ok():
           return Result.ok(null);
-        case Error():
+        case Err():
           return Result.error(result.error);
       }
     } on Exception catch (e) {
@@ -32,7 +32,7 @@ class AuthRepository {
     try {
       final result = await _authService.login(dto);
       switch (result) {
-        case Error():
+        case Err():
           return Result.error(result.error);
         case Ok<ResponseUserDto>():
           final responseDto = result.value;
@@ -41,7 +41,7 @@ class AuthRepository {
             responseDto.token,
           );
           switch (tokenResult) {
-            case Error():
+            case Err():
               return Result.error(tokenResult.error);
             default:
               break;
