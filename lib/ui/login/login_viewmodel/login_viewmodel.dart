@@ -5,40 +5,25 @@ import 'package:social_architecture_example/domain/models/user_model/user_model.
 import 'package:social_architecture_example/utils/command.dart';
 import 'package:social_architecture_example/utils/result.dart';
 
-class LoginViewmodel extends ChangeNotifier {
+class LoginViewmodel {
   LoginViewmodel() {
-    command = Command(_tryLogin);
+    loginCommand = Command1<UserModel, LoginDto>(_tryLogin);
   }
   final AuthRepository _authRepository = AuthRepository.instance;
-  late final Command command;
+  late final Command1 loginCommand;
 
-  bool isAuthenticated = false;
-  UserModel? _userModel;
-  UserModel? get user => _userModel;
 
-  String? username;
-  String? password;
+  Future<Result<UserModel>> _tryLogin(LoginDto dto) async {
 
-  Future<Result<void>> _tryLogin() async {
-    isAuthenticated = false;
-    bool missingCredentials = !(username != null && password != null);
-
-    if (missingCredentials) {
-      return Result.error(Exception('username and password cannot be null'));
-    }
-    final result = await _authRepository.login(
-      LoginDto(username: username!, password: password!),
-    );
+    final result = await _authRepository.login(dto);
     switch (result) {
       case Ok<UserModel>():
         {
-          _userModel = result.value;
-          isAuthenticated = true;
-          notifyListeners();
-          return Result.ok(null);
+          return Result.ok(result.value);
         }
       case Err():
         return Result.error(result.error);
     }
   }
+
 }

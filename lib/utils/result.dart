@@ -15,5 +15,5 @@ final class Err<T> extends Result<T> {
   const Err._(this.error);
   final Object error;
   @override
-  String toString() => 'Result<$T>.error($error)';
+  String toString() => 'Result<$Object>.error(${error.toString()})';
 }

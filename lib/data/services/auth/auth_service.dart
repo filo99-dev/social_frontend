@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:social_architecture_example/data/models/requests/auth/login_dto/login_dto.dart';
 import 'package:social_architecture_example/data/models/requests/auth/register_dto/register_dto.dart';
+import 'package:social_architecture_example/data/models/response/generic_error_dto.dart/generic_error_dto.dart';
 import 'package:social_architecture_example/data/models/response/response_user_dto/response_user_dto.dart';
 import 'package:social_architecture_example/data/services/api_paths.dart';
 import 'package:social_architecture_example/data/services/shared_preferences/my_shared_preferences.dart';
@@ -41,7 +42,10 @@ class AuthService {
           }
           return Result.ok(responseDto);
         default:
-          return Result.error(HttpException('login call error'));
+          final genericError = GenericErrorDto.fromJson(
+            jsonDecode(utf8.decode(response.bodyBytes)),
+          );
+          return Result.error(genericError.message);
       }
     } on Exception catch (e) {
       log(e.toString());
