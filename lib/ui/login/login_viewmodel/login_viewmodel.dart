@@ -14,16 +14,7 @@ class LoginViewmodel {
 
 
   Future<Result<UserModel>> _tryLogin(LoginDto dto) async {
-
-    final result = await _authRepository.login(dto);
-    switch (result) {
-      case Ok<UserModel>():
-        {
-          return Result.ok(result.value);
-        }
-      case Err():
-        return Result.error(result.error);
-    }
+    return await _authRepository.login(dto);
   }
 
 }

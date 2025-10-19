@@ -38,7 +38,7 @@ class AuthService {
             response.headers[HttpHeaders.authorizationHeader]!,
           );
           if (result is Err<Exception>) {
-            throw result.error;
+            return Result.error(result.error);
           }
           return Result.ok(responseDto);
         default:
@@ -49,7 +49,7 @@ class AuthService {
       }
     } on Exception catch (e) {
       log(e.toString());
-      return Result.error(e);
+      return Result.error('errore di rete, contattare il servizio tecnico');
     }
   }
 
@@ -64,7 +64,10 @@ class AuthService {
         case HttpStatus.ok:
           return Result.ok(null);
         default:
-          return Result.error(HttpException('register call error'));
+          final errorDto = GenericErrorDto.fromJson(
+            jsonDecode(utf8.decode(response.bodyBytes)),
+          );
+          return Result.error(HttpException(errorDto.message));
       }
     } on Exception catch (e) {
       log(e.toString());

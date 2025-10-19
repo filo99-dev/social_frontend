@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_architecture_example/ui/core/themes/my_themes.dart';
 import 'package:social_architecture_example/ui/login/login_viewmodel/login_viewmodel.dart';
 import 'package:social_architecture_example/ui/login/widgets/login_screen.dart';
 
@@ -18,9 +19,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData.from(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
-      ),
+      theme: ThemeData(colorScheme: MyThemes.lightScheme()),
+      // darkTheme: ThemeData(colorScheme: MyThemes.darkScheme(),),
       home: LoginScreen(loginViewmodel: LoginViewmodel()),
     );
   }

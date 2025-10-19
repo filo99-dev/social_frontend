@@ -6,8 +6,8 @@ typedef CommandAction0<T> = Future<Result<T>> Function();
 //definisco un alias per una funzione con 1 parametr0 di tipo A che restituisca un Future con Result<T>
 typedef CommandAction1<T, ParamType> = Future<Result<T>> Function(ParamType);
 
-abstract class Command<T> extends ChangeNotifier {
-  Command();
+abstract class _Command<T> extends ChangeNotifier {
+  _Command();
 
   bool _running = false;
   bool get running => _running;
@@ -46,7 +46,7 @@ abstract class Command<T> extends ChangeNotifier {
   }
 }
 
-class Command0<T> extends Command<T> {
+class Command0<T> extends _Command<T> {
   Command0(this._action);
   final CommandAction0<T> _action;
 
@@ -55,7 +55,7 @@ class Command0<T> extends Command<T> {
   }
 }
 
-class Command1<T, ParamType> extends Command {
+class Command1<T, ParamType> extends _Command {
   Command1(this._action);
   final CommandAction1<T, ParamType> _action;
   Future<void> execute(ParamType param) async {
