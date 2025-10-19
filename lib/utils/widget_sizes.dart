@@ -5,12 +5,12 @@ class WidgetSizes {
   const WidgetSizes(this.context);
   final BuildContext context;
   Dimens get dimens => Dimens.of(context);
-  double get loginFormSize {
+  double get standardFormSize {
     final width = MediaQuery.sizeOf(context).width;
     return switch (dimens) {
       Dimens.compact => width * 0.9,
-      Dimens.medium => 600,
-      _ => 800,
+      Dimens.medium => 400,
+      _ => 600,
     };
   }
 }

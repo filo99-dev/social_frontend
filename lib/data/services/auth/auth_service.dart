@@ -16,6 +16,24 @@ class AuthService {
   static final _instance = AuthService._();
   static AuthService get instance => _instance;
 
+  Future<Result<void>> checkUsername(String username) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$kUsernameCheck/$username'),
+        headers: kRequestHeaders,
+      );
+      switch (response.statusCode) {
+        case HttpStatus.ok:
+          return Result.ok(null);
+        default:
+          return Result.error('username già in uso');
+      }
+    } on Exception catch (e) {
+      log(e.toString());
+      return Result.error('errore di rete, contattare il servizio tecnico');
+    }
+  }
+
   Future<Result<ResponseUserDto>> login(LoginDto dto) async {
     try {
       final response = await http.post(
@@ -67,11 +85,11 @@ class AuthService {
           final errorDto = GenericErrorDto.fromJson(
             jsonDecode(utf8.decode(response.bodyBytes)),
           );
-          return Result.error(HttpException(errorDto.message));
+          return Result.error(errorDto.message);
       }
     } on Exception catch (e) {
       log(e.toString());
-      return Result.error(e);
+      return Result.error('errore di rete, contattare il servizio tecnico');
     }
   }
 }

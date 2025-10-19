@@ -12,9 +12,7 @@ class LoginViewmodel {
   final AuthRepository _authRepository = AuthRepository.instance;
   late final Command1 loginCommand;
 
-
   Future<Result<UserModel>> _tryLogin(LoginDto dto) async {
     return await _authRepository.login(dto);
   }
-
 }

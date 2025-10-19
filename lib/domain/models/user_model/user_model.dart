@@ -32,7 +32,7 @@ enum Role { base, moderator, admin }
 extension RoleX on Role {
   String toJson() => name;
   static Role fromJson(String value) {
-    return Role.values.firstWhere((e) => e.name == value);
+    return Role.values.firstWhere((e) => e.name == value.toLowerCase());
   }
 
   static Role fromString(String value) => fromJson(value);

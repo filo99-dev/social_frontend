@@ -14,15 +14,13 @@ class AuthRepository {
   final _authService = AuthService.instance;
   final _sharedPrefService = MySharedPreferences.instance;
 
+  Future<Result<void>> checkUsername(String username) async {
+    return await _authService.checkUsername(username);
+  }
+
   Future<Result<void>> register(RegisterDto dto) async {
     try {
-      final result = await _authService.register(dto);
-      switch (result) {
-        case Ok():
-          return Result.ok(null);
-        case Err():
-          return Result.error(result.error);
-      }
+      return await _authService.register(dto);
     } on Exception catch (e) {
       return Result.error(e);
     }

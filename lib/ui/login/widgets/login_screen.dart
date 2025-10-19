@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:social_architecture_example/data/models/requests/auth/login_dto/login_dto.dart';
 import 'package:social_architecture_example/ui/core/themes/dimens.dart';
 import 'package:social_architecture_example/ui/login/login_viewmodel/login_viewmodel.dart';
+import 'package:social_architecture_example/ui/register/register_viewmodel/register_viewmodel.dart';
+import 'package:social_architecture_example/ui/register/widgets/register_screen.dart';
 import 'package:social_architecture_example/utils/result.dart';
 import 'package:social_architecture_example/utils/widget_sizes.dart';
 
@@ -21,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final formSize = WidgetSizes(context).loginFormSize;
+    final formSize = WidgetSizes(context).standardFormSize;
     return Scaffold(
       body: Center(
         child: Form(
@@ -32,6 +34,10 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: Dimens.of(context).edgeInsetsScreenSymmetric,
               child: Column(
                 children: [
+                  Image.asset(
+                    'assets/logos/twittr_logo.png',
+                    width: formSize / 2.5,
+                  ),
                   TextFormField(
                     validator:
                         (value) =>
@@ -79,8 +85,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         return Center(child: CircularProgressIndicator());
                       }
                       return SizedBox(
-                        width: formSize * 0.3,
+                        width: formSize,
                         child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                          ),
                           onPressed: () async {
                             // if (_formStateKey.currentState!.validate()) {
                             await widget.loginViewmodel.loginCommand.execute(
@@ -92,9 +101,32 @@ class _LoginScreenState extends State<LoginScreen> {
                             return;
                             // }
                           },
-                          child: Text('login'),
+                          child: Text(
+                            'login',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ),
                         ),
                       );
+                    },
+                  ),
+                  TextButton(
+                    child: Text('registrati'),
+                    onPressed: () {
+                      final navigator = Navigator.of(context);
+                      if (navigator.canPop()) {
+                        navigator.pop(context);
+                      } else {
+                        navigator.push(
+                          MaterialPageRoute(
+                            builder:
+                                (_) => RegisterScreen(
+                                  registerViewmodel: RegisterViewmodel(),
+                                ),
+                          ),
+                        );
+                      }
                     },
                   ),
                 ],
@@ -108,16 +140,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void didUpdateWidget(covariant LoginScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
     oldWidget.loginViewmodel.loginCommand.removeListener(_onResult);
     widget.loginViewmodel.loginCommand.addListener(_onResult);
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
   void initState() {
-    super.initState();
     _obscureText = true;
     widget.loginViewmodel.loginCommand.addListener(_onResult);
+    super.initState();
   }
 
   @override
@@ -128,18 +160,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _onResult() {
     if (widget.loginViewmodel.loginCommand.error) {
-      final errorType =
-          (widget.loginViewmodel.loginCommand.result as Err).error;
+      final resultError = widget.loginViewmodel.loginCommand.result as Err;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(errorType.toString())));
+      ).showSnackBar(SnackBar(content: Text(resultError.error.toString())));
       return;
     }
     if (widget.loginViewmodel.loginCommand.completed) {
       widget.loginViewmodel.loginCommand.clearResult();
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('leskere loign success')));
+      ).showSnackBar(SnackBar(content: Text('Naviga verso home')));
       return;
     }
   }
