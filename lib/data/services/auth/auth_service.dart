@@ -12,10 +12,6 @@ import 'package:social_architecture_example/utils/result.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  const AuthService._();
-  static final _instance = AuthService._();
-  static AuthService get instance => _instance;
-
   Future<Result<void>> checkUsername(String username) async {
     try {
       final response = await http.get(
@@ -34,7 +30,7 @@ class AuthService {
     }
   }
 
-  Future<Result<ResponseUserDto>> login(LoginDto dto) async {
+  Future<Result<String>> login(LoginDto dto) async {
     try {
       final response = await http.post(
         Uri.parse(kLoginPath),
@@ -43,22 +39,8 @@ class AuthService {
       );
       switch (response.statusCode) {
         case HttpStatus.ok:
-          final body = jsonDecode(utf8.decode(response.bodyBytes));
-          final responseDto = ResponseUserDto(
-            id: body['id'],
-            email: body['email'],
-            phoneNumber: body['phoneNumber'],
-            username: body['username'],
-            role: body['role'],
-            token: response.headers[HttpHeaders.authorizationHeader]!,
-          );
-          final result = await MySharedPreferences.instance.saveToken(
-            response.headers[HttpHeaders.authorizationHeader]!,
-          );
-          if (result is Err<Exception>) {
-            return Result.error(result.error);
-          }
-          return Result.ok(responseDto);
+          final token = response.headers[HttpHeaders.authorizationHeader];
+          return Result.ok(token!);
         default:
           final genericError = GenericErrorDto.fromJson(
             jsonDecode(utf8.decode(response.bodyBytes)),

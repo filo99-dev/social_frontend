@@ -12,6 +12,8 @@ abstract class UserModel with _$UserModel {
     required String phoneNumber,
     required int id,
     required Role role,
+    required bool isFollowed,
+    required bool isFollowing,
   }) = _UserModel;
   factory UserModel.fromJson(Map<String, Object?> json) =>
       _$UserModelFromJson(json);
@@ -21,6 +23,8 @@ abstract class UserModel with _$UserModel {
       email: dto.email,
       phoneNumber: dto.phoneNumber,
       id: dto.id,
+      isFollowed: dto.isFollowed,
+      isFollowing: dto.isFollowing,
       role: RoleX.fromString(dto.role),
     );
   }

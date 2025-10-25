@@ -11,7 +11,8 @@ abstract class ResponseUserDto with _$ResponseUserDto {
     required String phoneNumber,
     required String username,
     required String role,
-    required String token
+    required bool isFollowed,
+    required bool isFollowing,
   }) = _ResponseUserDto;
   factory ResponseUserDto.fromJson(Map<String, Object?> json) =>
       _$ResponseUserDtoFromJson(json);

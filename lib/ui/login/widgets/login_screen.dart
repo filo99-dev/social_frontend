@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:social_architecture_example/data/models/requests/auth/login_dto/login_dto.dart';
+import 'package:social_architecture_example/routing/routes.dart';
 import 'package:social_architecture_example/ui/core/themes/dimens.dart';
+import 'package:social_architecture_example/ui/core/widgets/custom_elevated_button.dart';
 import 'package:social_architecture_example/ui/login/login_viewmodel/login_viewmodel.dart';
 import 'package:social_architecture_example/ui/register/register_viewmodel/register_viewmodel.dart';
 import 'package:social_architecture_example/ui/register/widgets/register_screen.dart';
@@ -35,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   Image.asset(
-                    'assets/logos/twittr_logo.png',
+                    'assets/logos/dashatar.png',
                     width: formSize / 2.5,
                   ),
                   TextFormField(
@@ -86,10 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                       return SizedBox(
                         width: formSize,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor,
-                          ),
+                        child: CustomElevatedButton(
                           onPressed: () async {
                             // if (_formStateKey.currentState!.validate()) {
                             await widget.loginViewmodel.loginCommand.execute(
@@ -101,33 +101,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             return;
                             // }
                           },
-                          child: Text(
-                            'login',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
-                          ),
+                          child: const Text('login'),
                         ),
                       );
                     },
                   ),
+                  const SizedBox(height: Dimens.paddingVertical),
                   TextButton(
-                    child: Text('registrati'),
-                    onPressed: () {
-                      final navigator = Navigator.of(context);
-                      if (navigator.canPop()) {
-                        navigator.pop(context);
-                      } else {
-                        navigator.push(
-                          MaterialPageRoute(
-                            builder:
-                                (_) => RegisterScreen(
-                                  registerViewmodel: RegisterViewmodel(),
-                                ),
-                          ),
-                        );
-                      }
-                    },
+                    child: const Text('registrati'),
+                    onPressed: () => _navigateToLogin(context),
                   ),
                 ],
               ),
@@ -174,4 +156,8 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
   }
+}
+
+void _navigateToLogin(BuildContext context) {
+  context.go(Routes.registration);
 }

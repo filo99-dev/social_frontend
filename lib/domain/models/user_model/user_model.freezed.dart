@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserModel {
 
- String get username; String get email; String get phoneNumber; int get id; Role get role;
+ String get username; String get email; String get phoneNumber; int get id; Role get role; bool get isFollowed; bool get isFollowing;
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserModelCopyWith<UserModel> get copyWith => _$UserModelCopyWithImpl<UserModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.id, id) || other.id == id)&&(identical(other.role, role) || other.role == role));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.id, id) || other.id == id)&&(identical(other.role, role) || other.role == role)&&(identical(other.isFollowed, isFollowed) || other.isFollowed == isFollowed)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,username,email,phoneNumber,id,role);
+int get hashCode => Object.hash(runtimeType,username,email,phoneNumber,id,role,isFollowed,isFollowing);
 
 @override
 String toString() {
-  return 'UserModel(username: $username, email: $email, phoneNumber: $phoneNumber, id: $id, role: $role)';
+  return 'UserModel(username: $username, email: $email, phoneNumber: $phoneNumber, id: $id, role: $role, isFollowed: $isFollowed, isFollowing: $isFollowing)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserModelCopyWith<$Res>  {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
- String username, String email, String phoneNumber, int id, Role role
+ String username, String email, String phoneNumber, int id, Role role, bool isFollowed, bool isFollowing
 });
 
 
@@ -65,14 +65,16 @@ class _$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? username = null,Object? email = null,Object? phoneNumber = null,Object? id = null,Object? role = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? username = null,Object? email = null,Object? phoneNumber = null,Object? id = null,Object? role = null,Object? isFollowed = null,Object? isFollowing = null,}) {
   return _then(_self.copyWith(
 username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
 as String,id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
-as Role,
+as Role,isFollowed: null == isFollowed ? _self.isFollowed : isFollowed // ignore: cast_nullable_to_non_nullable
+as bool,isFollowing: null == isFollowing ? _self.isFollowing : isFollowing // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -157,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String username,  String email,  String phoneNumber,  int id,  Role role)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String username,  String email,  String phoneNumber,  int id,  Role role,  bool isFollowed,  bool isFollowing)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.username,_that.email,_that.phoneNumber,_that.id,_that.role);case _:
+return $default(_that.username,_that.email,_that.phoneNumber,_that.id,_that.role,_that.isFollowed,_that.isFollowing);case _:
   return orElse();
 
 }
@@ -178,10 +180,10 @@ return $default(_that.username,_that.email,_that.phoneNumber,_that.id,_that.role
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String username,  String email,  String phoneNumber,  int id,  Role role)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String username,  String email,  String phoneNumber,  int id,  Role role,  bool isFollowed,  bool isFollowing)  $default,) {final _that = this;
 switch (_that) {
 case _UserModel():
-return $default(_that.username,_that.email,_that.phoneNumber,_that.id,_that.role);case _:
+return $default(_that.username,_that.email,_that.phoneNumber,_that.id,_that.role,_that.isFollowed,_that.isFollowing);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +200,10 @@ return $default(_that.username,_that.email,_that.phoneNumber,_that.id,_that.role
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String username,  String email,  String phoneNumber,  int id,  Role role)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String username,  String email,  String phoneNumber,  int id,  Role role,  bool isFollowed,  bool isFollowing)?  $default,) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.username,_that.email,_that.phoneNumber,_that.id,_that.role);case _:
+return $default(_that.username,_that.email,_that.phoneNumber,_that.id,_that.role,_that.isFollowed,_that.isFollowing);case _:
   return null;
 
 }
@@ -213,7 +215,7 @@ return $default(_that.username,_that.email,_that.phoneNumber,_that.id,_that.role
 @JsonSerializable()
 
 class _UserModel implements UserModel {
-  const _UserModel({required this.username, required this.email, required this.phoneNumber, required this.id, required this.role});
+  const _UserModel({required this.username, required this.email, required this.phoneNumber, required this.id, required this.role, required this.isFollowed, required this.isFollowing});
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 @override final  String username;
@@ -221,6 +223,8 @@ class _UserModel implements UserModel {
 @override final  String phoneNumber;
 @override final  int id;
 @override final  Role role;
+@override final  bool isFollowed;
+@override final  bool isFollowing;
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +239,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.id, id) || other.id == id)&&(identical(other.role, role) || other.role == role));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.id, id) || other.id == id)&&(identical(other.role, role) || other.role == role)&&(identical(other.isFollowed, isFollowed) || other.isFollowed == isFollowed)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,username,email,phoneNumber,id,role);
+int get hashCode => Object.hash(runtimeType,username,email,phoneNumber,id,role,isFollowed,isFollowing);
 
 @override
 String toString() {
-  return 'UserModel(username: $username, email: $email, phoneNumber: $phoneNumber, id: $id, role: $role)';
+  return 'UserModel(username: $username, email: $email, phoneNumber: $phoneNumber, id: $id, role: $role, isFollowed: $isFollowed, isFollowing: $isFollowing)';
 }
 
 
@@ -255,7 +259,7 @@ abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Re
   factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
 @override @useResult
 $Res call({
- String username, String email, String phoneNumber, int id, Role role
+ String username, String email, String phoneNumber, int id, Role role, bool isFollowed, bool isFollowing
 });
 
 
@@ -272,14 +276,16 @@ class __$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? username = null,Object? email = null,Object? phoneNumber = null,Object? id = null,Object? role = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? username = null,Object? email = null,Object? phoneNumber = null,Object? id = null,Object? role = null,Object? isFollowed = null,Object? isFollowing = null,}) {
   return _then(_UserModel(
 username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
 as String,id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
-as Role,
+as Role,isFollowed: null == isFollowed ? _self.isFollowed : isFollowed // ignore: cast_nullable_to_non_nullable
+as bool,isFollowing: null == isFollowing ? _self.isFollowing : isFollowing // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

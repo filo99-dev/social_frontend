@@ -1,8 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:social_architecture_example/data/models/requests/auth/register_dto/register_dto.dart';
+import 'package:social_architecture_example/data/repositories/auth/auth_repository.dart';
+import 'package:social_architecture_example/routing/routes.dart';
 import 'package:social_architecture_example/ui/core/themes/dimens.dart';
+import 'package:social_architecture_example/ui/core/widgets/custom_elevated_button.dart';
 import 'package:social_architecture_example/ui/login/login_viewmodel/login_viewmodel.dart';
 import 'package:social_architecture_example/ui/login/widgets/login_screen.dart';
 import 'package:social_architecture_example/ui/register/register_viewmodel/register_viewmodel.dart';
@@ -39,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Column(
                 children: [
                   Image.asset(
-                    'assets/logos/twittr_logo.png',
+                    'assets/logos/dashatar.png',
                     width: formSize / 2.5,
                   ),
                   ListenableBuilder(
@@ -129,10 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       }
                       return SizedBox(
                         width: formSize,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor,
-                          ),
+                        child: CustomElevatedButton(
                           onPressed: () async {
                             // if (_formStateKey.currentState!.validate()) {
                             await widget.registerViewmodel.registerCommand
@@ -147,32 +149,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             return;
                             // }
                           },
-                          child: Text(
-                            'registrati',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
-                          ),
+                          child: const Text('registrati'),
                         ),
                       );
                     },
                   ),
+                  const SizedBox(height: Dimens.paddingVertical),
                   TextButton(
+                    style: TextButton.styleFrom(),
                     child: Text('accedi'),
                     onPressed: () {
-                      final navigator = Navigator.of(context);
-                      if (navigator.canPop()) {
-                        navigator.pop(context);
-                      } else {
-                        navigator.push(
-                          MaterialPageRoute(
-                            builder:
-                                (_) => LoginScreen(
-                                  loginViewmodel: LoginViewmodel(),
-                                ),
-                          ),
-                        );
-                      }
+                      context.go(Routes.login);
                     },
                   ),
                 ],
@@ -228,11 +215,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
     if (widget.registerViewmodel.registerCommand.completed) {
       widget.registerViewmodel.registerCommand.clearResult();
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => LoginScreen(loginViewmodel: LoginViewmodel()),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('registrazione effettuata')));
     }
   }
 }

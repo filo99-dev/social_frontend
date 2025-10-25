@@ -1,11 +1,30 @@
 import "package:flutter/material.dart";
 
-class MyThemes {
-  final TextTheme textTheme;
+abstract final class MyThemes {
+  static const _textTheme = TextTheme(
+    headlineLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.w500),
+    headlineSmall: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+    titleMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+    bodyLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+    bodyMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+    bodySmall: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      color: Colors.grey,
+    ),
+    labelSmall: TextStyle(
+      fontSize: 10,
+      fontWeight: FontWeight.w500,
+      color: Colors.grey,
+    ),
+    labelLarge: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w400,
+      color: Colors.grey,
+    ),
+  );
 
-  const MyThemes(this.textTheme);
-
-  static ColorScheme lightScheme() {
+  static ColorScheme _lightScheme() {
     return const ColorScheme(
       brightness: Brightness.light,
       primary: Color(0xff3b608f),
@@ -56,8 +75,8 @@ class MyThemes {
     );
   }
 
-  ThemeData light() {
-    return theme(lightScheme());
+  static ThemeData light() {
+    return theme(_lightScheme());
   }
 
   static ColorScheme lightMediumContrastScheme() {
@@ -111,7 +130,7 @@ class MyThemes {
     );
   }
 
-  ThemeData lightMediumContrast() {
+  static ThemeData lightMediumContrast() {
     return theme(lightMediumContrastScheme());
   }
 
@@ -166,11 +185,11 @@ class MyThemes {
     );
   }
 
-  ThemeData lightHighContrast() {
+  static ThemeData lightHighContrast() {
     return theme(lightHighContrastScheme());
   }
 
-  static ColorScheme darkScheme() {
+  static ColorScheme _darkScheme() {
     return const ColorScheme(
       brightness: Brightness.dark,
       primary: Color(0xffa5c8fe),
@@ -221,8 +240,8 @@ class MyThemes {
     );
   }
 
-  ThemeData dark() {
-    return theme(darkScheme());
+  static ThemeData dark() {
+    return theme(_darkScheme());
   }
 
   static ColorScheme darkMediumContrastScheme() {
@@ -276,7 +295,7 @@ class MyThemes {
     );
   }
 
-  ThemeData darkMediumContrast() {
+  static ThemeData darkMediumContrast() {
     return theme(darkMediumContrastScheme());
   }
 
@@ -331,26 +350,20 @@ class MyThemes {
     );
   }
 
-  ThemeData darkHighContrast() {
+  static ThemeData darkHighContrast() {
     return theme(darkHighContrastScheme());
   }
 
-
-  ThemeData theme(ColorScheme colorScheme) => ThemeData(
-     useMaterial3: true,
-     brightness: colorScheme.brightness,
-     colorScheme: colorScheme,
-     textTheme: textTheme.apply(
-       bodyColor: colorScheme.onSurface,
-       displayColor: colorScheme.onSurface,
-     ),
-     scaffoldBackgroundColor: colorScheme.background,
-     canvasColor: colorScheme.surface,
+  static ThemeData theme(ColorScheme colorScheme) => ThemeData(
+    useMaterial3: true,
+    brightness: colorScheme.brightness,
+    colorScheme: colorScheme,
+    textTheme: _textTheme,
+    scaffoldBackgroundColor: colorScheme.background,
+    canvasColor: colorScheme.surface,
   );
 
-
-  List<ExtendedColor> get extendedColors => [
-  ];
+  List<ExtendedColor> get extendedColors => [];
 }
 
 class ExtendedColor {

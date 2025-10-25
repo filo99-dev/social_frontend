@@ -1,18 +1,22 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:social_architecture_example/data/models/requests/auth/login_dto/login_dto.dart';
 import 'package:social_architecture_example/data/models/requests/auth/register_dto/register_dto.dart';
-import 'package:social_architecture_example/data/models/response/response_user_dto/response_user_dto.dart';
+import 'package:social_architecture_example/data/services/api_paths.dart';
 import 'package:social_architecture_example/data/services/auth/auth_service.dart';
 import 'package:social_architecture_example/data/services/shared_preferences/my_shared_preferences.dart';
-import 'package:social_architecture_example/domain/models/user_model/user_model.dart';
 import 'package:social_architecture_example/utils/result.dart';
 
-class AuthRepository {
-  AuthRepository._();
-  static final _instance = AuthRepository._();
-  static AuthRepository get instance => _instance;
-
-  final _authService = AuthService.instance;
-  final _sharedPrefService = MySharedPreferences.instance;
+class AuthRepository extends ChangeNotifier {
+  AuthRepository({
+    required AuthService authService,
+    required MySharedPreferences sharedPreferencesService,
+  }) : _authService = authService,
+       _sharedPrefService = sharedPreferencesService;
+  late final AuthService _authService;
+  late final MySharedPreferences _sharedPrefService;
 
   Future<Result<void>> checkUsername(String username) async {
     return await _authService.checkUsername(username);
@@ -26,28 +30,66 @@ class AuthRepository {
     }
   }
 
-  Future<Result<UserModel>> login(LoginDto dto) async {
+  bool? _isAuthenticated;
+  String? _authToken;
+  Future<bool> get isAuthenticated async {
+    if (_isAuthenticated != null) {
+      return _isAuthenticated!;
+    }
+    await _fetch();
+    return _isAuthenticated ?? false;
+  }
+
+  Future<void> _fetch() async {
+    final result = await _sharedPrefService.getToken();
+    switch (result) {
+      case Ok<String>():
+        _authToken = result.value;
+        _isAuthenticated = true;
+
+        kRequestHeaders.putIfAbsent(
+          HttpHeaders.authorizationHeader,
+          () => result.value,
+        );
+        break;
+      case Err():
+        log('failed to fetch token from local storage');
+    }
+  }
+
+  Future<Result<String>> login(LoginDto dto) async {
     try {
       final result = await _authService.login(dto);
       switch (result) {
-        case Err():
-          return Result.error(result.error);
-        case Ok<ResponseUserDto>():
-          final responseDto = result.value;
-          final userModel = UserModel.fromDto(responseDto);
-          final tokenResult = await _sharedPrefService.saveToken(
-            responseDto.token,
+        case Ok<String>():
+          _isAuthenticated = true;
+          _authToken = result.value;
+          kRequestHeaders.putIfAbsent(
+            HttpHeaders.authorizationHeader,
+            () => result.value,
           );
-          switch (tokenResult) {
-            case Err():
-              return Result.error(tokenResult.error);
-            default:
-              break;
-          }
-          return Result.ok(userModel);
+          return await _sharedPrefService.saveToken(result.value);
+        case Err():
+          log('error logging in: ${result.error}');
+          return Result.error(result.error);
       }
-    } on Exception catch (e) {
-      return Result.error(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future<Result<void>> logout() async {
+    try {
+      final result = await _sharedPrefService.clearToken();
+      kRequestHeaders.remove(HttpHeaders.authorizationHeader);
+      if (result is Err) {
+        log('failed to clear token');
+        _authToken = null;
+        _isAuthenticated = false;
+      }
+      return result;
+    } finally {
+      notifyListeners();
     }
   }
 }

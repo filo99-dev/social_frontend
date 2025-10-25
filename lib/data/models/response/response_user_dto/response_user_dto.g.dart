@@ -13,7 +13,8 @@ _ResponseUserDto _$ResponseUserDtoFromJson(Map<String, dynamic> json) =>
       phoneNumber: json['phoneNumber'] as String,
       username: json['username'] as String,
       role: json['role'] as String,
-      token: json['token'] as String,
+      isFollowed: json['isFollowed'] as bool,
+      isFollowing: json['isFollowing'] as bool,
     );
 
 Map<String, dynamic> _$ResponseUserDtoToJson(_ResponseUserDto instance) =>
@@ -23,5 +24,6 @@ Map<String, dynamic> _$ResponseUserDtoToJson(_ResponseUserDto instance) =>
       'phoneNumber': instance.phoneNumber,
       'username': instance.username,
       'role': instance.role,
-      'token': instance.token,
+      'isFollowed': instance.isFollowed,
+      'isFollowing': instance.isFollowing,
     };

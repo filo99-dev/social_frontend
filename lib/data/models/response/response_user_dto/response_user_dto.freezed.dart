@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ResponseUserDto {
 
- int get id; String get email; String get phoneNumber; String get username; String get role; String get token;
+ int get id; String get email; String get phoneNumber; String get username; String get role; bool get isFollowed; bool get isFollowing;
 /// Create a copy of ResponseUserDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ResponseUserDtoCopyWith<ResponseUserDto> get copyWith => _$ResponseUserDtoCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ResponseUserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.username, username) || other.username == username)&&(identical(other.role, role) || other.role == role)&&(identical(other.token, token) || other.token == token));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ResponseUserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.username, username) || other.username == username)&&(identical(other.role, role) || other.role == role)&&(identical(other.isFollowed, isFollowed) || other.isFollowed == isFollowed)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,email,phoneNumber,username,role,token);
+int get hashCode => Object.hash(runtimeType,id,email,phoneNumber,username,role,isFollowed,isFollowing);
 
 @override
 String toString() {
-  return 'ResponseUserDto(id: $id, email: $email, phoneNumber: $phoneNumber, username: $username, role: $role, token: $token)';
+  return 'ResponseUserDto(id: $id, email: $email, phoneNumber: $phoneNumber, username: $username, role: $role, isFollowed: $isFollowed, isFollowing: $isFollowing)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ResponseUserDtoCopyWith<$Res>  {
   factory $ResponseUserDtoCopyWith(ResponseUserDto value, $Res Function(ResponseUserDto) _then) = _$ResponseUserDtoCopyWithImpl;
 @useResult
 $Res call({
- int id, String email, String phoneNumber, String username, String role, String token
+ int id, String email, String phoneNumber, String username, String role, bool isFollowed, bool isFollowing
 });
 
 
@@ -65,15 +65,16 @@ class _$ResponseUserDtoCopyWithImpl<$Res>
 
 /// Create a copy of ResponseUserDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? email = null,Object? phoneNumber = null,Object? username = null,Object? role = null,Object? token = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? email = null,Object? phoneNumber = null,Object? username = null,Object? role = null,Object? isFollowed = null,Object? isFollowing = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
-as String,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
-as String,
+as String,isFollowed: null == isFollowed ? _self.isFollowed : isFollowed // ignore: cast_nullable_to_non_nullable
+as bool,isFollowing: null == isFollowing ? _self.isFollowing : isFollowing // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -158,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String email,  String phoneNumber,  String username,  String role,  String token)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String email,  String phoneNumber,  String username,  String role,  bool isFollowed,  bool isFollowing)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ResponseUserDto() when $default != null:
-return $default(_that.id,_that.email,_that.phoneNumber,_that.username,_that.role,_that.token);case _:
+return $default(_that.id,_that.email,_that.phoneNumber,_that.username,_that.role,_that.isFollowed,_that.isFollowing);case _:
   return orElse();
 
 }
@@ -179,10 +180,10 @@ return $default(_that.id,_that.email,_that.phoneNumber,_that.username,_that.role
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String email,  String phoneNumber,  String username,  String role,  String token)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String email,  String phoneNumber,  String username,  String role,  bool isFollowed,  bool isFollowing)  $default,) {final _that = this;
 switch (_that) {
 case _ResponseUserDto():
-return $default(_that.id,_that.email,_that.phoneNumber,_that.username,_that.role,_that.token);case _:
+return $default(_that.id,_that.email,_that.phoneNumber,_that.username,_that.role,_that.isFollowed,_that.isFollowing);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +200,10 @@ return $default(_that.id,_that.email,_that.phoneNumber,_that.username,_that.role
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String email,  String phoneNumber,  String username,  String role,  String token)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String email,  String phoneNumber,  String username,  String role,  bool isFollowed,  bool isFollowing)?  $default,) {final _that = this;
 switch (_that) {
 case _ResponseUserDto() when $default != null:
-return $default(_that.id,_that.email,_that.phoneNumber,_that.username,_that.role,_that.token);case _:
+return $default(_that.id,_that.email,_that.phoneNumber,_that.username,_that.role,_that.isFollowed,_that.isFollowing);case _:
   return null;
 
 }
@@ -214,7 +215,7 @@ return $default(_that.id,_that.email,_that.phoneNumber,_that.username,_that.role
 @JsonSerializable()
 
 class _ResponseUserDto implements ResponseUserDto {
-  const _ResponseUserDto({required this.id, required this.email, required this.phoneNumber, required this.username, required this.role, required this.token});
+  const _ResponseUserDto({required this.id, required this.email, required this.phoneNumber, required this.username, required this.role, required this.isFollowed, required this.isFollowing});
   factory _ResponseUserDto.fromJson(Map<String, dynamic> json) => _$ResponseUserDtoFromJson(json);
 
 @override final  int id;
@@ -222,7 +223,8 @@ class _ResponseUserDto implements ResponseUserDto {
 @override final  String phoneNumber;
 @override final  String username;
 @override final  String role;
-@override final  String token;
+@override final  bool isFollowed;
+@override final  bool isFollowing;
 
 /// Create a copy of ResponseUserDto
 /// with the given fields replaced by the non-null parameter values.
@@ -237,16 +239,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ResponseUserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.username, username) || other.username == username)&&(identical(other.role, role) || other.role == role)&&(identical(other.token, token) || other.token == token));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ResponseUserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.username, username) || other.username == username)&&(identical(other.role, role) || other.role == role)&&(identical(other.isFollowed, isFollowed) || other.isFollowed == isFollowed)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,email,phoneNumber,username,role,token);
+int get hashCode => Object.hash(runtimeType,id,email,phoneNumber,username,role,isFollowed,isFollowing);
 
 @override
 String toString() {
-  return 'ResponseUserDto(id: $id, email: $email, phoneNumber: $phoneNumber, username: $username, role: $role, token: $token)';
+  return 'ResponseUserDto(id: $id, email: $email, phoneNumber: $phoneNumber, username: $username, role: $role, isFollowed: $isFollowed, isFollowing: $isFollowing)';
 }
 
 
@@ -257,7 +259,7 @@ abstract mixin class _$ResponseUserDtoCopyWith<$Res> implements $ResponseUserDto
   factory _$ResponseUserDtoCopyWith(_ResponseUserDto value, $Res Function(_ResponseUserDto) _then) = __$ResponseUserDtoCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String email, String phoneNumber, String username, String role, String token
+ int id, String email, String phoneNumber, String username, String role, bool isFollowed, bool isFollowing
 });
 
 
@@ -274,15 +276,16 @@ class __$ResponseUserDtoCopyWithImpl<$Res>
 
 /// Create a copy of ResponseUserDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? email = null,Object? phoneNumber = null,Object? username = null,Object? role = null,Object? token = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? email = null,Object? phoneNumber = null,Object? username = null,Object? role = null,Object? isFollowed = null,Object? isFollowing = null,}) {
   return _then(_ResponseUserDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
-as String,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
-as String,
+as String,isFollowed: null == isFollowed ? _self.isFollowed : isFollowed // ignore: cast_nullable_to_non_nullable
+as bool,isFollowing: null == isFollowing ? _self.isFollowing : isFollowing // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

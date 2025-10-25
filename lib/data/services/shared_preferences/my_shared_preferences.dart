@@ -2,16 +2,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_architecture_example/utils/result.dart';
 
 class MySharedPreferences {
-  const MySharedPreferences._();
-  static final _instance = MySharedPreferences._();
-  static MySharedPreferences get instance => _instance;
   static const _tokenKey = 'JWT_AUTH_TOKEN';
 
-  Future<Result<void>> saveToken(String token) async {
+  Future<Result<String>> saveToken(String token) async {
     try {
       final sp = await SharedPreferences.getInstance();
       sp.setString(_tokenKey, token);
-      return Result.ok(null);
+      return Result.ok(token);
     } on Exception catch (e) {
       return Result.error(e);
     }
@@ -20,7 +17,25 @@ class MySharedPreferences {
   Future<Result<String>> getToken() async {
     try {
       final sp = await SharedPreferences.getInstance();
-      return Result.ok(sp.getString(_tokenKey)!);
+      final token = sp.getString(_tokenKey);
+      if (token == null) {
+        return Result.error('no token saved');
+      }
+      return Result.ok(token!);
+    } on Exception catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  Future<Result<void>> clearToken() async {
+    try {
+      final sp = await SharedPreferences.getInstance();
+      final removed = await sp.remove(_tokenKey);
+      if (removed) {
+        return Result.ok(null);
+      } else {
+        return Result.error('errore durante il logout');
+      }
     } on Exception catch (e) {
       return Result.error(e);
     }
